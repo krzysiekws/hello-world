@@ -17,16 +17,16 @@ namespace SystemCalculator
             Console.WriteLine("Podaj wartość");
             var valueToCalculate = Console.ReadLine();
         }
-
     }
 
     public class SystemCalc
     {
-        public int OldSys { get; set; }
-        public int NewSystem { get; set; }
-        public int ValueToCalc { get; set; }
 
-        public SystemCalc(int oldSystem, int newSystem, int valueToCalc)
+        public string OldSys { get; set; }
+        public int NewSystem { get; set; }
+        public string ValueToCalc { get; set; }
+
+        public SystemCalc(string oldSystem, int newSystem, string valueToCalc)
         {
             this.OldSys = oldSystem;
             this.NewSystem = newSystem;
@@ -35,28 +35,48 @@ namespace SystemCalculator
 
         public string Calculate()
         {
-            switch (NewSystem)
+            if (NewSystem >= 2 && NewSystem <= 16) 
             {
-                case 2:
-                    return CalcStandardMethod();
-                case 7:
-                    return CalcStandardMethod();
-                case 16:
-                        throw new NotImplementedException();
-                default:
-                        throw new Exception("Not implemeted system");
+                return CalcStringMethod();
+            }
+            else
+            {
+                throw new Exception("Please, choose a system between 2 and 16");
             }
         }
 
-        public string CalcStandardMethod()
-        {            
+        private string CalcStringMethod()
+        {
+            string characters = "0123456789ABCDEFG";
+                        
             string returnValue = null;
-            int loopValue = ValueToCalc;
+            int newSystem = NewSystem;
+            int loopValue = Convert.ToInt32(ValueToCalc);
 
             while (loopValue > 0)
             {
-                returnValue = loopValue % NewSystem + returnValue;
-                loopValue = loopValue / NewSystem;
+                returnValue = characters[loopValue % newSystem] + returnValue;
+                loopValue = loopValue / newSystem;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// work only for 2-10 system
+        /// </summary>
+        /// <returns></returns>
+        [Obsolete]
+        public string CalcStandardMethod()
+        {            
+            string returnValue = null;
+            int newSystem = Convert.ToInt32(NewSystem);
+            int loopValue = Convert.ToInt32(ValueToCalc);
+
+            while (loopValue > 0)
+            {
+                returnValue = loopValue % newSystem + returnValue;
+                loopValue = loopValue / newSystem;
             }
 
             return returnValue;
